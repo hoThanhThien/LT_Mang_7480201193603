@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 # Thay đổi các thông tin này cho phù hợp với database của bạn
 DB_USER = 'root'
-DB_PASSWORD = 'password'
+DB_PASSWORD = ''
 DB_HOST = 'localhost'
 DB_PORT = '3306'
 DB_NAME = 'tourbookingdb'
