@@ -1,10 +1,20 @@
-class Booking:
-    def __init__(self, booking_id: int, user_id: int, tour_id: int, booking_date: str, number_of_people: int, total_amount: float, status: str, discount_id: int):
-        self.booking_id = booking_id
-        self.user_id = user_id
-        self.tour_id = tour_id
-        self.booking_date = booking_date
-        self.number_of_people = number_of_people
-        self.total_amount = total_amount
-        self.status = status
-        self.discount_id = discount_id
+from sqlalchemy import Column, Integer, Date, Numeric, Enum, ForeignKey
+from sqlalchemy.orm import relationship
+from app.database import Base
+import enum
+
+class BookingStatus(enum.Enum):
+    Pending = 'Pending'
+    Confirmed = 'Confirmed'
+    Cancelled = 'Cancelled'
+
+class Booking(Base):
+    __tablename__ = 'booking'
+    BookingID = Column(Integer, primary_key=True, index=True)
+    UserID = Column(Integer, ForeignKey('user.UserID'))
+    TourID = Column(Integer, ForeignKey('tour.TourID'))
+    BookingDate = Column(Date)
+    NumberOfPeople = Column(Integer)
+    TotalAmount = Column(Numeric(10,2))
+    Status = Column(Enum(BookingStatus), default=BookingStatus.Pending)
+    DiscountID = Column(Integer, ForeignKey('discount.DiscountID'))
