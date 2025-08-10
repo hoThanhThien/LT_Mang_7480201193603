@@ -1,0 +1,233 @@
+/* Custom Responsive Styles */
+
+/* Mobile First Approach */
+@media (max-width: 575.98px) {
+  /* Extra small devices (phones, less than 576px) */
+  .hero-section {
+    padding: 60px 0 !important;
+    min-height: 80vh !important;
+  }
+  
+  .display-3 {
+    font-size: 2.2rem !important;
+  }
+  
+  .navbar-brand {
+    font-size: 1.5rem !important;
+  }
+  
+  .btn-lg {
+    padding: 0.7rem 1.5rem !important;
+    font-size: 0.9rem !important;
+  }
+  
+  .card-body {
+    padding: 1rem !important;
+  }
+  
+  .badge {
+    font-size: 0.7rem !important;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  /* Small devices (landscape phones, 576px and up) */
+  .hero-section {
+    min-height: 90vh !important;
+  }
+  
+  .display-3 {
+    font-size: 2.8rem !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  /* Medium devices (tablets, 768px and up) */
+  .hero-section {
+    min-height: 95vh !important;
+  }
+  
+  .display-3 {
+    font-size: 3.2rem !important;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  /* Large devices (desktops, 992px and up) */
+  .hero-section {
+    min-height: 100vh !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  /* Extra large devices (large desktops, 1200px and up) */
+  .hero-section {
+    min-height: 100vh !important;
+    background-attachment: fixed !important;
+  }
+}
+
+/* Custom animations and transitions */
+.card {
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
+}
+
+.btn {
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Navbar scroll effect */
+.navbar {
+  transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+}
+
+/* Hero section parallax effect */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Image optimization for mobile */
+@media (max-width: 768px) {
+  .card-img-top,
+  .img-fluid {
+    object-fit: cover;
+    height: auto;
+    max-height: 200px;
+  }
+  
+  .hero-section {
+    background-attachment: scroll !important;
+    background-size: cover !important;
+    background-position: center center !important;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .card:hover {
+    transform: none;
+  }
+  
+  .btn:hover {
+    transform: none;
+  }
+}
+
+/* Loading animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* Utility classes for better mobile experience */
+.text-responsive {
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
+}
+
+.heading-responsive {
+  font-size: clamp(1.5rem, 4vw, 3rem);
+}
+
+/* Better touch targets */
+@media (max-width: 768px) {
+  .btn,
+  .nav-link,
+  a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+/* Improved spacing for mobile */
+@media (max-width: 576px) {
+  .py-5 {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+  
+  .mb-5 {
+    margin-bottom: 2rem !important;
+  }
+  
+  .mt-5 {
+    margin-top: 2rem !important;
+  }
+}
+
+/* Better image aspect ratios */
+.tour-image {
+  aspect-ratio: 16/10;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .tour-image {
+    aspect-ratio: 16/9;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus styles for better accessibility */
+.btn:focus,
+.nav-link:focus,
+a:focus {
+  outline: 2px solid #0d6efd;
+  outline-offset: 2px;
+}
+
+/* Performance optimizations */
+* {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
