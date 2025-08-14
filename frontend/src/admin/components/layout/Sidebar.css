@@ -1,0 +1,37 @@
+/* src/admin/components/layout/Sidebar.css */
+.sidebar {
+  width: 220px;
+  background-color: #1f2d3d;
+  color: #fff;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding-top: 20px;
+}
+
+.sidebar-header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar-nav li {
+  margin: 0.5rem 0;
+  padding: 0.5rem 1rem;
+}
+
+.sidebar-nav li a {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+}
+
+.sidebar-nav li.active,
+.sidebar-nav li:hover {
+  background-color: #32465a;
+}
