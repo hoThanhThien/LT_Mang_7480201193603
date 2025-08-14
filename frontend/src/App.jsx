@@ -1,15 +1,19 @@
-import React from 'react'
-import Home from './views/Home'
-import GuideList from './views/GuideList'
-import 'bootstrap/dist/css/bootstrap.min.css'
+// src/App.jsx
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ClientApp from "./client/ClientApp";
+import AdminApp from "./admin/AdminApp";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
-    <div>
-      <Home />
-      <GuideList />
-    </div>
-  )
+    <Router>
+      <Routes>
+        <Route path="/admin/*" element={<AdminApp />} />
+        <Route path="/*" element={<ClientApp />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
