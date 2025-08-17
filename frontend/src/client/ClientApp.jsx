@@ -1,9 +1,9 @@
-// src/client/ClientApp.jsx
-import React from "react";
-import ClientRoutes from "./routes";
+import React from 'react';
+import ClientRoutes from './routes'; // Import file routes.jsx
 
-const ClientApp = () => {
+function ClientApp() {
+  // Chỉ cần trả về component chứa router của client
   return <ClientRoutes />;
-};
+}
 
 export default ClientApp;

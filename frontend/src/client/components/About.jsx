@@ -64,7 +64,7 @@ export default function About() {
                 ))}
               </ul>
 
-              <a href="#" className="btn btn-primary btn-lg px-4 py-3 rounded-pill">
+              <a href="/tours" className="btn btn-primary btn-lg px-4 py-3 rounded-pill">
                 Booking Now
               </a>
 
