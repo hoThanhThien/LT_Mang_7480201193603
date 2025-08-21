@@ -10,11 +10,12 @@ export default function SupportChat() {
 
   const sendMessage = () => {
     if (!input.trim()) return;
+
     const userMsg = { from: "user", text: input };
     setMessages(prev => [...prev, userMsg]);
     setInput("");
 
-    // Mock reply after 1.5s
+    // Giả lập phản hồi sau 1.5s
     setTimeout(() => {
       const supportReply = {
         from: "support",
@@ -39,8 +40,9 @@ export default function SupportChat() {
           <div className="chat-header">Hỗ trợ trực tuyến</div>
           <div className="chat-body">
             {messages.map((msg, i) => (
-              <div key={i} className={`chat-msg ${msg.from}`}>
-                {msg.text}
+              <div key={i} className={`msg ${msg.from}`}>
+                <div className="avatar"></div>
+                <div className="bubble">{msg.text}</div>
               </div>
             ))}
             <div ref={bottomRef}></div>

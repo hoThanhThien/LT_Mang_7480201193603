@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { login, register } from "../services/authService";
 import { useAuth } from "../context/AuthContext";
 import loginImg from "../../assets/Vinh-Ha-Long.jpg";
-import registerImg from "../../assets/Phu-sy2.jpg";
+import registerImg from "../../assets/Phu-sy.jpg";
 
 import "../../styles/Auth.css";
 
