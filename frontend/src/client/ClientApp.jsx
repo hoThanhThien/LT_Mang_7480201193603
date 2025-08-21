@@ -1,9 +1,14 @@
-import React from 'react';
-import ClientRoutes from './routes'; // Import file routes.jsx
+// src/client/ClientApp.jsx
+import React from "react";
+import ClientRoutes from "./routes";
+import { AuthProvider } from "./context/AuthContext"; // 👈 thêm dòng này
 
 function ClientApp() {
-  // Chỉ cần trả về component chứa router của client
-  return <ClientRoutes />;
+  return (
+    <AuthProvider>
+      <ClientRoutes />
+    </AuthProvider>
+  );
 }
 
 export default ClientApp;

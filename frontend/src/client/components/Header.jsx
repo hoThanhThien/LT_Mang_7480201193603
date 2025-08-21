@@ -1,31 +1,47 @@
-import React, { useState, useEffect } from "react";
-import { NavLink, Link } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { NavLink, Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function Header() {
   const [navActive, setNavActive] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-  const header = document.querySelector('.header');
-  const updateVar = () => {
-    if (header) {
-      document.documentElement.style
-        .setProperty('--header-h', `${header.offsetHeight}px`);
-    }
+    const header = document.querySelector('.header');
+    const updateVar = () => {
+      if (header) {
+        document.documentElement.style.setProperty('--header-h', `${header.offsetHeight}px`);
+      }
+    };
+    updateVar();
+    const ro = new ResizeObserver(updateVar);
+    if (header) ro.observe(header);
+    window.addEventListener('resize', updateVar);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', updateVar);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
   };
-  updateVar();
-  const ro = new ResizeObserver(updateVar);
-  if (header) ro.observe(header);
-  window.addEventListener('resize', updateVar);
-  return () => {
-    ro.disconnect();
-    window.removeEventListener('resize', updateVar);
-  };
-}, []);
 
-
-  const closeOnClick = () => setNavActive(false);
-
-  // helper để NavLink có class "active"
   const navClass = ({ isActive }) =>
     "nav-link text-dark fw-semibold px-0 py-2" + (isActive ? " active" : "");
 
@@ -42,81 +58,79 @@ export default function Header() {
       }}
     >
       <div className="container">
-        {/* Hàng trên cùng */}
         <div className="d-flex justify-content-between align-items-center" style={{ height: 80 }}>
-          {/* Logo + tagline */}
+          {/* Logo */}
           <div className="d-flex flex-column justify-content-center">
-            <Link to="/" className="text-decoration-none" onClick={closeOnClick}>
-              <h1 className="logo fw-bold text-primary fs-2 mb-0" style={{ lineHeight: 1 }}>
-                Tourest
-              </h1>
+            <Link to="/" className="text-decoration-none" onClick={() => setNavActive(false)}>
+              <h1 className="logo fw-bold text-primary fs-2 mb-0">Tourest</h1>
             </Link>
-            <p
-              className="tagline text-muted mb-0"
-              style={{ fontSize: "0.65rem", lineHeight: 1, whiteSpace: "nowrap" }}
-            >
+            <p className="tagline text-muted mb-0" style={{ fontSize: "0.65rem" }}>
               Công ty chuyên cung cấp dịch vụ du lịch chất lượng trọn gói
             </p>
           </div>
 
-          {/* Nút menu mobile */}
+          {/* Mobile nav toggle */}
           <button
             className="btn d-lg-none border-0 bg-transparent p-2"
             onClick={() => setNavActive(!navActive)}
-            aria-label="Toggle navigation"
           >
             <i className={`bi ${navActive ? "bi-x" : "bi-list"}`}></i>
           </button>
 
-          {/* NAV */}
-          <nav
-            className={`${navActive ? "d-flex" : "d-none"} d-lg-flex align-items-center`}
-            style={{ gap: 16 }}
-          >
-            {/* List link */}
+          {/* Nav items */}
+          <nav className={`${navActive ? "d-flex" : "d-none"} d-lg-flex align-items-center`} style={{ gap: 16 }}>
             <ul className="d-flex flex-column flex-lg-row align-items-center gap-3 list-unstyled mb-0">
+              <li><NavLink to="/" className={navClass}>Home</NavLink></li>
+              <li><NavLink to="/?scroll=about" className="nav-link text-dark fw-semibold px-0 py-2">About Us</NavLink></li>
+              <li><NavLink to="/?scroll=tours" className="nav-link text-dark fw-semibold px-0 py-2">Featured Tours</NavLink></li>
+              <li><NavLink to="/?scroll=destinations" className="nav-link text-dark fw-semibold px-0 py-2">Destinations</NavLink></li>
+              <li><NavLink to="/?scroll=blog" className="nav-link text-dark fw-semibold px-0 py-2">Blog</NavLink></li>
+              <li><a href="/contact" className="nav-link text-dark fw-semibold px-0 py-2">Contact Us</a></li>
               <li>
-                <NavLink onClick={closeOnClick} to="/" className={navClass}>
-                  Home
+                <NavLink to="/tours" className="btn btn-primary rounded-pill fw-semibold px-3 py-2">
+                  Booking Now
                 </NavLink>
               </li>
-              {/* Các anchor này vẫn OK vì nằm trên trang Home */}
-              <li>
-                <NavLink to="/?scroll=about" className="nav-link text-dark fw-semibold px-0 py-2" onClick={closeOnClick}>
-                About Us
-                </NavLink>
-              </li>
-             <li>
-  <NavLink to="/?scroll=tours" className="nav-link text-dark fw-semibold px-0 py-2" onClick={closeOnClick}>
-    Featured Tours
-  </NavLink>
-</li>
-<li>
-  <NavLink to="/?scroll=destinations" className="nav-link text-dark fw-semibold px-0 py-2" onClick={closeOnClick}>
-    Destinations
-  </NavLink>
-</li>
-<li>
-  <NavLink to="/?scroll=blog" className="nav-link text-dark fw-semibold px-0 py-2" onClick={closeOnClick}>
-    Blog
-  </NavLink>
-</li>
-              <li>
-                <a href="/contact" className="nav-link text-dark fw-semibold px-0 py-2">
-                  Contact Us
-                </a>
-              </li>
-            </ul>
 
-            {/* Nút Booking – luôn căn giữa dọc nhờ align-items-center của nav */}
-            <NavLink
-              to="/tours"
-              onClick={closeOnClick}
-              className="btn btn-primary rounded-pill fw-semibold d-flex align-items-center justify-content-center"
-              style={{ padding: "10px 18px" }}
-            >
-              Booking Now
-            </NavLink>
+              {/* Avatar + dropdown */}
+              {user ? (
+                <li className="position-relative" ref={dropdownRef}>
+                  <div
+                    className="d-flex align-items-center gap-2"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                  >
+                    <img
+                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=random`}
+                      alt="Avatar"
+                      width="32"
+                      height="32"
+                      className="rounded-circle"
+                    />
+                    <span className="text-dark fw-semibold small">Hi, {user.name.split(" ")[0]}</span>
+                  </div>
+
+                  {dropdownOpen && (
+                    <div
+                      className="position-absolute bg-white shadow-sm rounded"
+                      style={{ right: 0, top: "110%", minWidth: "150px", zIndex: 2000 }}
+                    >
+                      <Link to="/user" className="dropdown-item px-3 py-2 text-dark text-decoration-none d-block">
+                        Hồ sơ cá nhân
+                      </Link>
+                      <button className="dropdown-item px-3 py-2 text-danger bg-white border-0 w-100 text-start" onClick={handleLogout}>
+                        Đăng xuất
+                      </button>
+                    </div>
+                  )}
+                </li>
+              ) : (
+                <>
+                  <li><Link to="/auth" className="btn btn-outline-primary btn-sm">Login</Link></li>
+                  <li><Link to="/auth" className="btn btn-primary btn-sm">Register</Link></li>
+                </>
+              )}
+            </ul>
           </nav>
         </div>
       </div>
