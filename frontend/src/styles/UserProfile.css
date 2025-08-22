@@ -1,0 +1,51 @@
+/* Card chính */
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Tiêu đề */
+.card h2 {
+  font-weight: 700;
+  color: #007bff;
+  margin-bottom: 24px;
+}
+
+/* Label thông tin */
+.form-label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+/* Dòng thông tin */
+.form-control-plaintext {
+  background-color: #f8f9fa;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+  color: #495057;
+}
+
+/* Nút logout */
+.btn-outline-danger {
+  padding: 8px 24px;
+  border-radius: 50px;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: #fff;
+  border-color: #dc3545;
+}
+
+/* Responsive card */
+@media (max-width: 576px) {
+  .card {
+    padding: 24px;
+  }
+}

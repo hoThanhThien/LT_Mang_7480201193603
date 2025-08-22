@@ -12,7 +12,7 @@ app = FastAPI(title="Tour Booking API", version="1.0.0")
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Trong production, chỉ định domain cụ thể
+    allow_origins=["http://localhost:5173"],  # Trong production, chỉ định domain cụ thể
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -109,7 +109,8 @@ async def get_current_user_info(current_user: Dict[str, Any] = Depends(get_curre
         full_name=current_user["FullName"],
         email=current_user["Email"],
         phone=current_user["Phone"],
-        role_name=current_user["RoleName"]
+        role_name=current_user["RoleName"],
+        role_id=current_user["RoleID"]  # ✅ Thêm dòng này
     )
 
 @router.put("/change-password")

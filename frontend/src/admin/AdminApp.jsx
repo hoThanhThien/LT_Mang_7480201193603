@@ -1,9 +1,11 @@
-// src/admin/AdminApp.jsx
 import React from "react";
 import AdminRoutes from "./routes";
+import { AuthProvider } from "../client/context/AuthContext"; // ✅ import đúng path
 
-const AdminApp = () => {
-  return <AdminRoutes />;
-};
-
-export default AdminApp;
+export default function AdminApp() {
+  return (
+    <AuthProvider>
+      <AdminRoutes />
+    </AuthProvider>
+  );
+}

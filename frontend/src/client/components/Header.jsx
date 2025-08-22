@@ -101,13 +101,17 @@ export default function Header() {
                     onClick={() => setDropdownOpen(!dropdownOpen)}
                   >
                     <img
-                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=random`}
+                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name || "User")}&background=random`}
                       alt="Avatar"
                       width="32"
                       height="32"
                       className="rounded-circle"
                     />
-                    <span className="text-dark fw-semibold small">Hi, {user.name.split(" ")[0]}</span>
+                    <span className="text-dark fw-semibold small">
+                        Hi, {user.full_name?.split(" ")[0] || "Guest"}
+                    </span>
+
+
                   </div>
 
                   {dropdownOpen && (

@@ -10,30 +10,44 @@ import "../../styles/Auth.css";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [form, setForm] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    phone: ""
+  });
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { setUser } = useAuth();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isLogin) {
-      const res = login(form);
-      if (res.success) {
-        setUser(res.user);
-        navigate("/");
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
+
+  if (isLogin) {
+    const res = await login(form);
+    if (res.success) {
+      setUser(res.user);
+
+      // 🔐 Điều hướng theo role_id
+      if (res.user?.role_id === 1) {
+        navigate("/admin");
       } else {
-        setError(res.message);
+        navigate("/");
       }
     } else {
-      const res = register(form);
-      if (res.success) {
-        setIsLogin(true);
-      } else {
-        setError(res.message);
-      }
+      setError(res.message);
     }
-  };
+  } else {
+    const res = await register({ ...form, role_id: 3 });
+    if (res.success) {
+      setIsLogin(true);
+    } else {
+      setError(res.message);
+    }
+  }
+};
 
   return (
     <div className="auth-wrapper">
@@ -43,15 +57,33 @@ export default function AuthPage() {
             <form onSubmit={handleSubmit} className="auth-form">
               <h2>{isLogin ? "Đăng nhập" : "Đăng ký"}</h2>
               {error && <div className="auth-error">{error}</div>}
+
               {!isLogin && (
-                <input
-                  type="text"
-                  placeholder="Họ và tên"
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  required
-                />
+                <>
+                  <input
+                    type="text"
+                    placeholder="Họ"
+                    value={form.first_name}
+                    onChange={(e) => setForm({ ...form, first_name: e.target.value })}
+                    required
+                  />
+                  <input
+                    type="text"
+                    placeholder="Tên"
+                    value={form.last_name}
+                    onChange={(e) => setForm({ ...form, last_name: e.target.value })}
+                    required
+                  />
+                  <input
+                    type="text"
+                    placeholder="Số điện thoại"
+                    value={form.phone}
+                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                    required
+                  />
+                </>
               )}
+
               <input
                 type="email"
                 placeholder="Email"
@@ -73,9 +105,7 @@ export default function AuthPage() {
           </div>
           <div
             className="image-section"
-            style={{
-              backgroundImage: `url(${isLogin ? loginImg : registerImg})`
-            }}
+            style={{ backgroundImage: `url(${isLogin ? loginImg : registerImg})` }}
           >
             <div className="image-content">
               <h2>{isLogin ? "Chào mừng trở lại!" : "Tạo tài khoản mới"}</h2>

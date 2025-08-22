@@ -3,6 +3,8 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from app.utils.auth import verify_token
 from app.database import get_db_connection
 from typing import Dict, Any
+from pymysql.cursors import DictCursor
+import pymysql
 
 security = HTTPBearer()
 
@@ -13,7 +15,7 @@ def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(securit
     
     # Lấy thông tin user từ database
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor(cursor=pymysql.cursors.DictCursor)  # ✅ Đúng
     
     try:
         cursor.execute("""

@@ -1,4 +1,3 @@
-// src/admin/routes.jsx
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import AdminLayout from "./components/layout/AdminLayout";
@@ -15,11 +14,19 @@ import PhotoList from "./views/PhotoList";
 import RoleList from "./views/RoleList";
 import TourGuideList from "./views/TourGuideList";
 import TourScheduleList from "./views/TourScheduleList";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const AdminRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<AdminLayout />}>
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute allowedRoles={[1]}> {/* ✅ chỉ role_id === 1 (admin) */}
+            <AdminLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<Home />} />
         <Route path="users" element={<UserList />} />
         <Route path="tours" element={<TourList />} />

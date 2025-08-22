@@ -28,6 +28,7 @@ class UserResponse(BaseModel):
     email: str
     phone: str
     role_name: str
+    role_id: int
 
 class ChangePassword(BaseModel):
     old_password: str
