@@ -55,7 +55,7 @@ async def websocket_endpoint(websocket: WebSocket, tour_id: int):
                 if message_type == "comment":
                     # Lưu comment vào database
                     connection = get_db_connection()
-                    cursor = connection.cursor(dictionary=True)
+                    cursor = connection.cursor()
                     
                     try:
                         # Lấy thông tin user
@@ -96,7 +96,7 @@ async def websocket_endpoint(websocket: WebSocket, tour_id: int):
 async def get_tour_live_stats(tour_id: int):
     """Lấy thống kê real-time của tour"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         # Số người đang online (connected via WebSocket)

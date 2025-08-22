@@ -13,7 +13,7 @@ async def create_comment(
 ):
     """Tạo comment/đánh giá tour (chỉ user đã book tour)"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         # Kiểm tra user đã book tour này chưa
@@ -68,7 +68,7 @@ async def create_comment(
 async def get_comments_by_tour(tour_id: int):
     """Lấy tất cả comment của một tour"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         cursor.execute("""
@@ -104,7 +104,7 @@ async def update_comment(
 ):
     """Cập nhật comment (chỉ owner hoặc admin)"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         # Kiểm tra comment tồn tại và thuộc về user
@@ -165,7 +165,7 @@ async def delete_comment(
 ):
     """Xóa comment (chỉ owner hoặc admin)"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         # Kiểm tra comment tồn tại và thuộc về user
@@ -205,7 +205,7 @@ async def delete_comment(
 async def get_all_comments(current_user: Dict[str, Any] = Depends(require_admin)):
     """Lấy tất cả comment (chỉ admin)"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         cursor.execute("""

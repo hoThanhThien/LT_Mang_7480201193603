@@ -31,7 +31,7 @@ async def create_booking(
 ):
     """Tạo booking mới (user đặt tour)"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         # Kiểm tra tour tồn tại và còn chỗ
@@ -124,7 +124,7 @@ async def create_booking(
 async def get_bookings(current_user: Dict[str, Any] = Depends(get_current_user)):
     """Lấy danh sách booking (admin: tất cả, user: chỉ của mình)"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         if current_user["RoleName"] == "admin":
@@ -181,7 +181,7 @@ async def update_booking_status(
         )
     
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         cursor.execute("""
@@ -214,7 +214,7 @@ async def cancel_booking(
 ):
     """Hủy booking (user chỉ có thể hủy booking của mình nếu chưa confirmed)"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         # Lấy thông tin booking

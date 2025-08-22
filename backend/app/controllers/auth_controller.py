@@ -14,7 +14,7 @@ security = HTTPBearer()
 async def register(user_data: UserRegister):
     """Đăng ký tài khoản mới"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         # Kiểm tra email đã tồn tại
@@ -60,7 +60,7 @@ async def register(user_data: UserRegister):
 async def login(user_credentials: UserLogin):
     """Đăng nhập"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         # Tìm user theo email
@@ -119,7 +119,7 @@ async def change_password(
 ):
     """Đổi mật khẩu"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         # Verify old password

@@ -24,7 +24,7 @@ class TourResponse(BaseModel):
 async def get_tours():
     """Lấy danh sách tất cả tour (public)"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         cursor.execute("""
@@ -58,7 +58,7 @@ async def get_tours():
 async def get_my_tours(current_user: Dict[str, Any] = Depends(require_guide)):
     """Lấy danh sách tour mà guide đang dẫn"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         # Tìm guide_id từ user_id
@@ -116,7 +116,7 @@ async def get_my_tours(current_user: Dict[str, Any] = Depends(require_guide)):
 async def get_tour_by_id(tour_id: int):
     """Lấy thông tin chi tiết tour (public)"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         cursor.execute("""
@@ -157,7 +157,7 @@ async def get_tour_bookings(
 ):
     """Lấy danh sách booking của tour (chỉ guide dẫn tour này hoặc admin)"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         # Kiểm tra quyền truy cập
@@ -209,7 +209,7 @@ async def create_tour(
 ):
     """Tạo tour mới (chỉ admin)"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         cursor.execute("""
@@ -250,7 +250,7 @@ async def update_tour(
 ):
     """Cập nhật tour (chỉ admin)"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         # Kiểm tra tour tồn tại
@@ -298,7 +298,7 @@ async def delete_tour(
 ):
     """Xóa tour (chỉ admin)"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         # Kiểm tra có booking nào không

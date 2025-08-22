@@ -10,7 +10,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 async def get_users(current_user: Dict[str, Any] = Depends(require_admin)):
     """Lấy danh sách tất cả user (chỉ admin)"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         cursor.execute("""
@@ -49,7 +49,7 @@ async def get_user_by_id(
         )
     
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         cursor.execute("""
@@ -92,7 +92,7 @@ async def delete_user(
         )
     
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         # Kiểm tra user tồn tại
@@ -132,7 +132,7 @@ async def update_user_role(
         )
     
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         # Kiểm tra user và role tồn tại
@@ -169,7 +169,7 @@ async def update_user_role(
 async def get_user_booking_history(current_user: Dict[str, Any] = Depends(get_current_user)):
     """Lấy lịch sử booking của user hiện tại"""
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+    cursor = connection.cursor()
     
     try:
         cursor.execute("""
