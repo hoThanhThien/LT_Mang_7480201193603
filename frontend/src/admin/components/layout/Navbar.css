@@ -42,3 +42,17 @@
 .admin-navbar__logout:hover {
   background-color: #c82333;
 }
+
+
+.admin-navbar__logout {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.admin-navbar__logout:hover {
+  background-color: #c82333;
+}
