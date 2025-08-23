@@ -8,7 +8,10 @@ import registerImg from "../../assets/Phu-sy.jpg";
 
 import "../../styles/Auth.css";
 
+
+
 export default function AuthPage() {
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({
     first_name: "",
@@ -18,7 +21,7 @@ export default function AuthPage() {
     phone: ""
   });
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  
   const { setUser } = useAuth();
 
  const handleSubmit = async (e) => {
@@ -51,6 +54,13 @@ export default function AuthPage() {
 
   return (
     <div className="auth-wrapper">
+        {/* ✅ Nút quay lại ở góc trái trên */}
+    <button
+      className="back-btn"
+      onClick={() => navigate("/")}
+    >
+      ⬅️ Quay lại
+    </button>
       <div className={`auth-container ${isLogin ? "login-mode" : "register-mode"}`}>
         <div className="auth-box">
           <div className="form-section">
@@ -119,6 +129,7 @@ export default function AuthPage() {
               >
                 {isLogin ? "Đăng ký ngay" : "Đăng nhập"}
               </button>
+             
             </div>
           </div>
         </div>
