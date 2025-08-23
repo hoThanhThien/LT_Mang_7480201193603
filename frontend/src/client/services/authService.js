@@ -54,3 +54,12 @@ export const getCurrentUser = async () => {
   const response = await api.get("/auth/me");
   return response.data;
 };
+
+export const changePassword = async (old_password, new_password) => {
+  // axios interceptor đã tự gắn Bearer token rồi
+  const res = await api.put("/auth/change-password", {
+    old_password,
+    new_password,
+  });
+  return res.data; // theo spec backend của bạn trả về string
+};
