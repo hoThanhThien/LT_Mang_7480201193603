@@ -1,7 +1,6 @@
-// 📁 src/components/tables/TourTable.jsx
 import React from "react";
 
-export default function TourTable({ tours }) {
+export default function TourTable({ tours, onEdit, onDelete }) {
   return (
     <div className="table-responsive">
       <table className="table table-striped table-bordered">
@@ -26,16 +25,16 @@ export default function TourTable({ tours }) {
             <tr key={tour.tour_id}>
               <td>{tour.tour_id}</td>
               <td>
-  {tour.photos?.length > 0 ? (
-    <img
-  src={`http://localhost:8000${tour.photos[0].image_url.trim()}`}
-  alt="tour"
-  style={{ width: "80px", height: "60px", objectFit: "cover" }}
-/>
-  ) : (
-    <span className="text-muted">Không có ảnh</span>
-  )}
-</td>
+                {tour.photos?.length > 0 ? (
+                  <img
+                    src={`http://localhost:8000${tour.photos[0].image_url.trim()}`}
+                    alt="tour"
+                    style={{ width: "80px", height: "60px", objectFit: "cover" }}
+                  />
+                ) : (
+                  <span className="text-muted">Không có ảnh</span>
+                )}
+              </td>
               <td>{tour.title}</td>
               <td>{tour.location}</td>
               <td>{tour.description}</td>
@@ -46,8 +45,18 @@ export default function TourTable({ tours }) {
               <td>{tour.status}</td>
               <td>{tour.category_name || tour.category_id}</td>
               <td>
-                <button className="btn btn-sm btn-primary me-2">Sửa</button>
-                <button className="btn btn-sm btn-danger">Xoá</button>
+                <button
+                  className="btn btn-sm btn-primary me-2"
+                  onClick={() => onEdit(tour)}
+                >
+                  Sửa
+                </button>
+                <button
+                  className="btn btn-sm btn-danger"
+                  onClick={() => onDelete(tour.tour_id)}
+                >
+                  Xoá
+                </button>
               </td>
             </tr>
           ))}

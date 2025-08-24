@@ -1,4 +1,6 @@
 # app/controllers/tour_controller.py
+from app.schemas.tour_schema import CreateTourSchema, UpdateTourSchema
+
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from app.dependencies.auth_dependencies import require_admin, require_guide
 from app.database import get_db_connection
@@ -7,6 +9,8 @@ from datetime import date, datetime
 from typing import List, Dict, Any, Optional
 from math import ceil
 import decimal
+import traceback
+import pymysql
 
 router = APIRouter(prefix="/tours", tags=["Tours"])
 
@@ -438,12 +442,12 @@ async def get_tour_bookings(
 # ---------- 7) Tạo tour (admin) ----------
 @router.post("/")
 async def create_tour(
-    tour_data: dict,
+    tour_data: CreateTourSchema,
     current_user: Dict[str, Any] = Depends(require_admin)
 ):
     required = ["title", "location", "description", "capacity", "price", "start_date", "end_date", "category_id"]
     for f in required:
-        if f not in tour_data:
+        if getattr(tour_data, f, None) is None:
             raise HTTPException(status_code=400, detail=f"Missing field: {f}")
 
     conn = get_db_connection()
@@ -453,15 +457,15 @@ async def create_tour(
                 INSERT INTO tour (Title, Location, Description, Capacity, Price, StartDate, EndDate, Status, CategoryID)
                 VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
             """, (
-                tour_data["title"],
-                tour_data["location"],
-                tour_data["description"],
-                tour_data["capacity"],
-                tour_data["price"],
-                tour_data["start_date"],
-                tour_data["end_date"],
-                tour_data.get("status", "Available"),
-                tour_data["category_id"],
+                tour_data.title,
+                tour_data.location,
+                tour_data.description,
+                tour_data.capacity,
+                tour_data.price,
+                tour_data.start_date,
+                tour_data.end_date,
+                tour_data.status or "Available",
+                tour_data.category_id,
             ))
             tour_id = cur.lastrowid
             conn.commit()
@@ -472,11 +476,12 @@ async def create_tour(
     finally:
         conn.close()
 
+
 # ---------- 8) Cập nhật tour (admin) ----------
 @router.put("/{tour_id}")
 async def update_tour(
     tour_id: int,
-    tour_data: dict,
+    tour_data: UpdateTourSchema,
     current_user: Dict[str, Any] = Depends(require_admin)
 ):
     field_map = {
@@ -490,11 +495,13 @@ async def update_tour(
         "status": "Status",
         "category_id": "CategoryID",
     }
+
     sets, params = [], []
     for f_json, col in field_map.items():
-        if f_json in tour_data:
+        value = getattr(tour_data, f_json, None)
+        if value is not None:
             sets.append(f"{col} = %s")
-            params.append(tour_data[f_json])
+            params.append(value)
 
     if not sets:
         return {"message": "Nothing to update"}
@@ -516,31 +523,47 @@ async def update_tour(
     finally:
         conn.close()
 
+
 # ---------- 9) Xóa tour (admin) ----------
 @router.delete("/{tour_id}")
 async def delete_tour(
     tour_id: int,
     current_user: Dict[str, Any] = Depends(require_admin)
 ):
+    import traceback
     conn = get_db_connection()
     try:
-        with conn.cursor() as cur:
+        with conn.cursor(pymysql.cursors.DictCursor) as cur:
+
+            # 1. Kiểm tra xem tour có booking chưa
             cur.execute("""
                 SELECT COUNT(*) AS booking_count
                 FROM booking
                 WHERE TourID = %s AND Status IN ('Confirmed','Pending')
             """, (tour_id,))
-            r = cur.fetchone()
-            if r and r["booking_count"] > 0:
-                raise HTTPException(status_code=400, detail="Cannot delete tour with existing bookings")
+            result = cur.fetchone()
+            booking_count = result["booking_count"] if result else 0
 
+            if booking_count > 0:
+                raise HTTPException(status_code=400, detail="Không thể xoá tour đang có booking")
+
+            # 2. Xoá ảnh trước
+            cur.execute("DELETE FROM photo WHERE TourID = %s", (tour_id,))
+
+            # 3. Xoá tour
             cur.execute("DELETE FROM tour WHERE TourID = %s", (tour_id,))
             if cur.rowcount == 0:
-                raise HTTPException(status_code=404, detail="Tour not found")
+                raise HTTPException(status_code=404, detail="Không tìm thấy tour")
+            
             conn.commit()
-        return {"message": "Tour deleted successfully"}
+        return {"message": "Xoá tour thành công"}
     except Exception as e:
         conn.rollback()
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         conn.close()
+
+
+
+

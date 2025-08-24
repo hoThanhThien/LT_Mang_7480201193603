@@ -7,6 +7,7 @@ from app.controllers import (
     auth_controller, comment_controller, websocket_controller
 )
 from fastapi.staticfiles import StaticFiles
+from app.controllers import upload_controller
 
 
 
@@ -35,6 +36,7 @@ app.include_router(discount_controller.router)
 app.include_router(photo_controller.router)
 app.include_router(role_controller.router)
 app.include_router(websocket_controller.router)
+app.include_router(upload_controller.router)
 
 @app.get("/")
 async def root():
