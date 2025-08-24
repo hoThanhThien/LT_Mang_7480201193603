@@ -49,13 +49,16 @@ def require_role(required_role: str):
     return role_checker
 
 def require_admin(current_user: Dict[str, Any] = Depends(get_current_user)):
-    """Yêu cầu quyền admin"""
-    if current_user.get("RoleName") != "admin":
+    role = current_user.get("RoleName", "").lower()
+    print("🔐 current_user:", current_user)
+    if role != "admin":
+        print("⛔ Từ chối vì RoleName =", role)
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Admin access required"
         )
     return current_user
+
 
 def require_guide(current_user: Dict[str, Any] = Depends(get_current_user)):
     """Yêu cầu quyền hướng dẫn viên"""

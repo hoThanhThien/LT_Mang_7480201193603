@@ -7,3 +7,4 @@ passlib[bcrypt]
 python-multipart
 python-socketio
 pydantic[email]
+bcrypt==3.2.0

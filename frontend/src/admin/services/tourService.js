@@ -1,5 +1,7 @@
-// Tour service for FE
+// 📁 src/services/tourService.js
+import { api } from "../../client/services/api";
+
 export async function fetchTours() {
-  const response = await fetch('/api/tours');
-  return response.json();
+  const response = await api.get("/tours"); // đã gắn token sẵn từ api.js
+  return response.data;
 }

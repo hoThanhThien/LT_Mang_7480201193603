@@ -6,8 +6,13 @@ from app.controllers import (
     role_controller,
     auth_controller, comment_controller, websocket_controller
 )
+from fastapi.staticfiles import StaticFiles
+
+
 
 app = FastAPI(title="Tour Booking API", version="1.0.0")
+
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # CORS middleware
 app.add_middleware(

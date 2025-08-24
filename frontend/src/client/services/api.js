@@ -19,13 +19,13 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// ❌ Tuỳ chọn: xử lý lỗi token hết hạn (401)
-// api.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     if (error.response?.status === 401) {
-//       localStorage.removeItem("access_token");
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("access_token");
+    }
+    return Promise.reject(error);
+  }
+);
