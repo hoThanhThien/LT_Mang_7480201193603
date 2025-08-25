@@ -27,19 +27,19 @@ const Sidebar = () => {
           <li className={isActive("/admin/bookings") ? "active" : ""}>
             <Link to="/admin/bookings">Bookings</Link>
           </li>
-          <li className={isActive("/admin/guides") ? "active" : ""}>
+          {/* <li className={isActive("/admin/guides") ? "active" : ""}>
             <Link to="/admin/guides">Guides</Link>
-          </li>
+          </li> */}
           <li className={isActive("/admin/categories") ? "active" : ""}>
             <Link to="/admin/categories">Categories</Link>
           </li>
           <li className={isActive("/admin/discounts") ? "active" : ""}>
             <Link to="/admin/discounts">Discounts</Link>
           </li>
-          <li className={isActive("/admin/payments") ? "active" : ""}>
+          {/* <li className={isActive("/admin/payments") ? "active" : ""}>
             <Link to="/admin/payments">Payments</Link>
-          </li>
-          <li className={isActive("/admin/photos") ? "active" : ""}>
+          </li> */}
+          {/* <li className={isActive("/admin/photos") ? "active" : ""}>
             <Link to="/admin/photos">Photos</Link>
           </li>
           <li className={isActive("/admin/roles") ? "active" : ""}>
@@ -50,7 +50,7 @@ const Sidebar = () => {
           </li>
           <li className={isActive("/admin/tour-schedules") ? "active" : ""}>
             <Link to="/admin/tour-schedules">Tour Schedules</Link>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </aside>
