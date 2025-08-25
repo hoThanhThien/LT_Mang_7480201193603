@@ -4,6 +4,8 @@ from app.schemas.auth_schema import UserResponse
 from app.database import get_db_connection
 from math import ceil
 from typing import List, Dict, Any, Optional
+from app.schemas.user_schema import UpdateUserSchema
+
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -278,5 +280,39 @@ async def get_user_booking_history(
             "items": rows,
             **make_meta(total, page, page_size)
         }
+    finally:
+        conn.close()
+
+@router.put("/{user_id}", response_model=dict)
+async def update_user(
+    user_id: int,
+    payload: UpdateUserSchema,
+    current_user: Dict[str, Any] = Depends(require_admin)
+):
+    """Cập nhật thông tin người dùng (admin)"""
+    if current_user["UserID"] == user_id:
+        raise HTTPException(status_code=400, detail="Cannot update yourself")
+
+    conn = get_db_connection()
+    try:
+        with conn.cursor() as cursor:
+            # Check user exists
+            cursor.execute("SELECT * FROM `user` WHERE UserID = %s", (user_id,))
+            if not cursor.fetchone():
+                raise HTTPException(status_code=404, detail="User not found")
+
+            # Update
+            sql = """
+                UPDATE `user`
+                SET FullName = %s, Email = %s, Phone = %s, RoleID = %s
+                WHERE UserID = %s
+            """
+            cursor.execute(sql, (payload.full_name, payload.email, payload.phone, payload.role_id, user_id))
+            conn.commit()
+
+        return {"message": "User updated successfully"}
+    except Exception as e:
+        conn.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
     finally:
         conn.close()
